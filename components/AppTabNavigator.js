@@ -8,8 +8,8 @@ export const AppTabNavigator = createBottomTabNavigator({
     HomeScreen: {
         screen: HomeScreen,
         navigationOptions: {
-            tabBarIcon: <Image style={{ width: 20, height: 20 }} 
-            source={require("../assets/HomeScreen.png")} 
+            tabBarIcon: <Image style={{ width: 20, height: 20 }}
+                source={require("../assets/HomeScreen.png")}
             />,
             tabBarLabel: "Home"
         }
@@ -17,7 +17,9 @@ export const AppTabNavigator = createBottomTabNavigator({
     BookRequest: {
         screen: ExchangeScreen,
         navigationOptions: {
-            tabBarIcon: <Image style={{ width: 20, height: 20 }} source={require("../assets/exchange.png")} />,
+            tabBarIcon: <Image style={{ width: 20, height: 20 }}
+                source={require("../assets/exchange.png")}
+            />,
             tabBarLabel: "Exchange"
         }
     }

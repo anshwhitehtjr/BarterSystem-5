@@ -4,7 +4,6 @@ import firebase from 'firebase';
 import db from '../config';
 
 export default class ExchangeScreen extends React.Component {
-
     constructor() {
         super();
         this.state = {
@@ -16,14 +15,14 @@ export default class ExchangeScreen extends React.Component {
 
     addItem = async (itemID, description) => {
         var userID = this.state.userID;
-        db.collections("exchange_requests").add({
-            "username": userName,
-            "item_name": itemName,
+        db.collection("exchange_requests").add({
+            "username": userID,
+            "item_name": itemID,
             "description": description
         })
         this.setState({
-            itemName: '',
-            description: ''
+            itemName: itemID,
+            description: description
         })
         return Alert.alert(
             'item ready to exchange',
@@ -54,8 +53,7 @@ export default class ExchangeScreen extends React.Component {
                 <TouchableOpacity onPress={
                     () => {
                         this.addItem(this.state.itemName, this.state.description)
-                    }
-                } >
+                    }} >
                     <Text> AddItem </Text>
                 </TouchableOpacity>
             </View>

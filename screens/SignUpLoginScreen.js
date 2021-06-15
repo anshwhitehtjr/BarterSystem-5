@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal, ScrollView } from 'react-native';
 import db from '../config';
 import firebase from 'firebase';
+import { red } from 'color-name';
 
 export default class SignUpLogin extends React.Component {
     constructor() {
@@ -28,7 +29,9 @@ export default class SignUpLogin extends React.Component {
                 >
                     <View style={styles.modalContainer} >
                         <View>
+                            <Text style={styles.modalTitle} > Registeration </Text>
                             <TextInput
+                                style={styles.formTextInput}
                                 placeholder={"First Name"}
                                 maxLength={8}
                                 onChangeText={(text) => {
@@ -38,6 +41,7 @@ export default class SignUpLogin extends React.Component {
                                 }}
                             />
                             <TextInput
+                                style={styles.formTextInput}
                                 placeholder={"Second Name"}
                                 maxLength={8}
                                 onChangeText={(text) => {
@@ -47,6 +51,7 @@ export default class SignUpLogin extends React.Component {
                                 }}
                             />
                             <TextInput
+                                style={styles.formTextInput}
                                 placeholder={"Phone Number"}
                                 onChangeText={(text) => {
                                     this.setState({
@@ -55,6 +60,7 @@ export default class SignUpLogin extends React.Component {
                                 }}
                             />
                             <TextInput
+                                style={styles.formTextInput}
                                 placeholder={"Address"}
                                 onChangeText={(text) => {
                                     this.setState({
@@ -63,6 +69,7 @@ export default class SignUpLogin extends React.Component {
                                 }}
                             />
                             <TextInput
+                                style={styles.formTextInput}
                                 placeholder={"Email ID"}
                                 keyboardType={'email-address'}
                                 onChangeText={(text) => {
@@ -72,6 +79,7 @@ export default class SignUpLogin extends React.Component {
                                 }}
                             />
                             <TextInput
+                                style={styles.formTextInput}
                                 placeholder={"Enter A Password"}
                                 secureTextEntry={true}
                                 maxLength={16}
@@ -82,6 +90,7 @@ export default class SignUpLogin extends React.Component {
                                 }}
                             />
                             <TextInput
+                                style={styles.formTextInput}
                                 placeholder={"Confirm your password"}
                                 secureTextEntry={true}
                                 maxLength={16}
@@ -97,7 +106,7 @@ export default class SignUpLogin extends React.Component {
                         }} >
                             <Text> Register </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity style={styles.cancelButton} onPress={() => {
                             this.setState({
                                 isModalVisible: false
                             })
@@ -113,7 +122,7 @@ export default class SignUpLogin extends React.Component {
 
     userSignUp = async (EmailId, Password, confirmPassword) => {
         if (Password !== confirmPassword) {
-            return alert(" password doesn't match\nCheck your password. ")
+            return alert(" password doesn't match \n Check your password. ")
         } else {
             firebase.auth().createUserWithEmailAndPassword(EmailId, Password)
                 .then((response) => {
@@ -132,43 +141,42 @@ export default class SignUpLogin extends React.Component {
                     )
                 })
                 .catch(function (error) {
-                    var errorCode = error.code;
                     var errorMessage = error.message;
-                    return alert(errorMessage + errorCode);
+                    return alert(errorMessage);
                 })
         }
     }
 
-    login = (EmailId, Password) => {
-        firebase.auth().signInWithEmailAndPassword(EmailId, Password)
+    login = (email, password) => {
+        firebase.auth().signInWithEmailAndPassword(email, password)
             .then(() => {
-                this.props.navigation.navigate('HomeScreen')
+                this.props.navigation.navigate('BookRequest')
             })
             .catch((error) => {
-                var errorCode = error.code;
                 var errorMessage = error.message;
-                return alert(errorMessage + errorCode)
+                return alert(errorMessage)
             })
     }
 
     render() {
         return (
-            <View>
+            <View style={styles.container} >
+                <Text style={styles.title} > BarterSystem App </Text>
                 <TextInput
-                    style={styles.inputBox}
+                    style={styles.loginBox}
                     keyboardType="email-address"
                     placeholder="abc@gmail.com"
-                    onChange={(text) => {
+                    onChangeText={(text) => {
                         this.setState({
                             EmailId: text
                         })
                     }}
                 />
                 <TextInput
-                    style={styles.inputBox}
+                    style={styles.loginBox}
                     secureTextEntry={true}
                     placeholder="Enter your passwords"
-                    onChange={
+                    onChangeText={
                         (text) => {
                             this.setState({ Password: text })
                         }}
@@ -178,7 +186,7 @@ export default class SignUpLogin extends React.Component {
                     onPress={() => {
                         this.login(this.state.EmailId, this.state.Password)
                     }}
-                >z
+                >
                     <Text> Log In </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -192,7 +200,6 @@ export default class SignUpLogin extends React.Component {
                     <Text> Sign Up </Text>
                 </TouchableOpacity>
                 <View>
-
                     {this.showModal()}
                 </View>
             </View>
@@ -203,38 +210,41 @@ export default class SignUpLogin extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#F8BE85',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
-    inputBox: {
+    profileContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: 65,
+        fontWeight: '300',
+        paddingBottom: 30,
+        color: '#ff3d00'
+    },
+    loginBox: {
         width: 300,
         height: 40,
-        borderBottomWidth: 2,
-        borderColor: '#FF8A65',
+        borderBottomWidth: 1.5,
+        borderColor: '#ff8a65',
         fontSize: 20,
         margin: 10,
-        paddingLeft: 10,
-        alignSelf: 'center',
-        margin: 10
+        paddingLeft: 10
     },
-    button: {
-        width: 300,
-        height: 50,
+    KeyboardAvoidingView: {
+        flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 25,
-        backgroundColor: '#FF9800',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 8
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 11,
-        elevation: 15,
+        alignItems: 'center'
+    },
+    modalTitle: {
+        justifyContent: 'center',
         alignSelf: 'center',
-        margin: 15
+        fontSize: 30,
+        color: '#ff5722',
+        margin: 50
     },
     modalContainer: {
         flex: 1,
@@ -247,6 +257,16 @@ const styles = StyleSheet.create({
         marginTop: 80,
         marginBottom: 80,
     },
+    formTextInput: {
+        width: "75%",
+        height: 35,
+        alignSelf: 'center',
+        borderColor: '#ffab91',
+        borderRadius: 10,
+        borderWidth: 1,
+        marginTop: 20,
+        padding: 10
+    },
     registerButton: {
         width: 200,
         height: 40,
@@ -256,4 +276,39 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop: 30
     },
+    registerButtonText: {
+        color: '#ff5722',
+        fontSize: 15,
+        fontWeight: 'bold'
+    },
+    cancelButton: {
+        width: 200,
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 5,
+    },
+
+    button: {
+        width: 300,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 25,
+        backgroundColor: "#ff9800",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 8,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 10.32,
+        elevation: 16,
+        padding: 10
+    },
+    buttonText: {
+        color: '#ffff',
+        fontWeight: '200',
+        fontSize: 20
+    }
 });

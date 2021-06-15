@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import db from '../config';
 
@@ -7,7 +7,7 @@ export default class HomeScreen extends React.Component {
     constructor() {
         super();
         this.state = {
-            allRequests: '',
+            allRequests: [],
         }
         this.requestRef = null;
     }
@@ -17,19 +17,21 @@ export default class HomeScreen extends React.Component {
             .onSnapshot((record) => {
                 var allRequests = [];
                 record.forEach((doc) => {
+                    console.log(doc.data())
                     allRequests.push(doc.data())
                 })
                 this.setState({
                     allRequests: allRequests
                 })
             })
+
     }
 
     componentDidMount() {
         this.getAllRequests();
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.requestRef();
     }
 
