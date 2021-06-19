@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import db from '../config';
 
@@ -17,22 +17,20 @@ export default class HomeScreen extends React.Component {
             .onSnapshot((record) => {
                 var allRequests = [];
                 record.forEach((doc) => {
-                    console.log(doc.data())
                     allRequests.push(doc.data())
                 })
                 this.setState({
                     allRequests: allRequests
                 })
             })
-
     }
 
     componentDidMount() {
-        this.getAllRequests();
+        this.getAllRequests()
     }
 
     componentWillUnmount() {
-        this.requestRef();
+        this.requestRef()
     }
 
     keyExtractor = (item, index) => {
@@ -40,6 +38,7 @@ export default class HomeScreen extends React.Component {
     }
 
     renderItem = ({ item, i }) => {
+        console.log(item);
         return (
             <ListItem
                 key={i}
@@ -47,7 +46,7 @@ export default class HomeScreen extends React.Component {
                 subtitle={item.description}
                 titleStyle={{ color: 'black', fontWeight: 'bold' }}
                 rightElement={
-                    <TouchableOpacity>
+                    <TouchableOpacity style={styles.button} >
                         <Text style={{ color: '#fff' }} > Exchange </Text>
                     </TouchableOpacity>
                 }
@@ -59,12 +58,40 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <View>
-                <FlatList
-                    keyExtractor={this.keyExtractor}
-                    data={this.state.allRequests}
-                    renderItem={this.renderItem}
-                />
+                <View>
+                    {this.state.allRequests.length === 0 ?
+                        (
+                            <View><Text> List Of All Requested Items </Text></View>
+                        ) : (
+                            <FlatList
+                                data={this.state.allRequests}
+                                keyExtractor={(item) => item.requestID}
+                                renderItem={this.renderItem} />
+                        )}
+                </View>
+
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    subContainer: {
+        flex: 1,
+        fontSize: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    button: {
+        width: 100,
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: "#ff5722",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 8
+        }
+    }
+})

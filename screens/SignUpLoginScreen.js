@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal, Scro
 import db from '../config';
 import firebase from 'firebase';
 import { red } from 'color-name';
+import { Header } from 'react-native-elements';
 
 export default class SignUpLogin extends React.Component {
     constructor() {
@@ -223,7 +224,9 @@ const styles = StyleSheet.create({
         fontSize: 65,
         fontWeight: '300',
         paddingBottom: 30,
-        color: '#ff3d00'
+        color: '#ff3d00',
+        flex: 1,
+        justifyContent: 'center',
     },
     loginBox: {
         width: 300,
